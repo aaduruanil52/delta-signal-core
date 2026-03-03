@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7076524413865087192
+--- !u!1 &892834733327751180
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5196442136289393877}
-  - component: {fileID: 719739634612919957}
-  - component: {fileID: 4658212650618832748}
-  - component: {fileID: 6447466996589713246}
-  - component: {fileID: 3087978945575547117}
+  - component: {fileID: 6534299333002505845}
+  - component: {fileID: 1494186419255669186}
+  - component: {fileID: 1297523389386678934}
+  - component: {fileID: 2250098118507751957}
+  - component: {fileID: 2929216417901727391}
   m_Layer: 5
-  m_Name: Card
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5196442136289393877
+--- !u!224 &6534299333002505845
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076524413865087192}
+  m_GameObject: {fileID: 892834733327751180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -39,21 +39,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &719739634612919957
+--- !u!222 &1494186419255669186
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076524413865087192}
+  m_GameObject: {fileID: 892834733327751180}
   m_CullTransparentMesh: 1
---- !u!114 &4658212650618832748
+--- !u!114 &1297523389386678934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076524413865087192}
+  m_GameObject: {fileID: 892834733327751180}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f28900bc4d40db9458403acb6ddf755d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -77,13 +77,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6447466996589713246
+--- !u!114 &2250098118507751957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076524413865087192}
+  m_GameObject: {fileID: 892834733327751180}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -117,22 +117,35 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4658212650618832748}
+  m_TargetGraphic: {fileID: 1297523389386678934}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3087978945575547117
+      m_Calls:
+      - m_Target: {fileID: 2929216417901727391}
+        m_TargetAssemblyTypeName: Card, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2929216417901727391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7076524413865087192}
+  m_GameObject: {fileID: 892834733327751180}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e51a032b28a98eb4d9565ebecb442247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardID: 0
-  isFlipped: 0
-  isMatched: 0
+  id: 0
+  iconImage: {fileID: 1297523389386678934}
+  frontSprite: {fileID: 0}
+  backSprite: {fileID: 21300000, guid: f28900bc4d40db9458403acb6ddf755d, type: 3}
