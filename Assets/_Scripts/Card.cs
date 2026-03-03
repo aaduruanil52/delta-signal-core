@@ -39,6 +39,8 @@ public class Card : MonoBehaviour
         if (flipCoroutine != null)
             StopCoroutine(flipCoroutine);
         flipCoroutine = StartCoroutine(FlipAnimation(showFront));
+
+        SoundManager.Instance.PlayFlip();
     }
 
     IEnumerator FlipAnimation(bool showFront)

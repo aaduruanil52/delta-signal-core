@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     private List<Card> allCards = new List<Card>();
 
     private int matches = 0;
+    private int inGameMatches = 0;
     private int turns = 0;
     private bool isChecking = false;
 
@@ -60,6 +61,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         GenerateCards();
+
+        SaveSystem save = FindObjectOfType<SaveSystem>();
+
+        if (save.HasSave())
+        {
+            matches = save.GetMatches();
+            turns = save.GetTurns();
+            selectedLayoutIndex = save.GetLayout();
+        }
+
         UpdateUI();
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
     }
@@ -73,6 +84,7 @@ public class GameManager : MonoBehaviour
         flippedCards.Clear();
         matches = 0;
         turns = 0;
+        inGameMatches = 0;
 
         GridLayout layout = availableLayouts[selectedLayoutIndex];
         int rows = layout.rows;
@@ -104,21 +116,21 @@ public class GameManager : MonoBehaviour
         RectTransform parentRect = gridParent.GetComponent<RectTransform>();
 
         // Calculate cell size to fill the parent rect
-        float availableWidth  = parentRect.rect.width  - gridPadding * 2 - cellSpacing * (cols - 1);
+        float availableWidth = parentRect.rect.width - gridPadding * 2 - cellSpacing * (cols - 1);
         float availableHeight = parentRect.rect.height - gridPadding * 2 - cellSpacing * (rows - 1);
 
-        float cellW = availableWidth  / cols;
+        float cellW = availableWidth / cols;
         float cellH = availableHeight / rows;
-       // float cellSize = Mathf.Min(cellW, cellH); // keep cards square
+        // float cellSize = Mathf.Min(cellW, cellH); // keep cards square
 
-        glg.constraint      = GridLayoutGroup.Constraint.FixedColumnCount;
+        glg.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         glg.constraintCount = cols;
-       // glg.cellSize        = new Vector2(cellSize, cellSize);
-        glg.spacing         = new Vector2(cellSpacing, cellSpacing);
-        glg.padding         = new RectOffset(
+        // glg.cellSize        = new Vector2(cellSize, cellSize);
+        glg.spacing = new Vector2(cellSpacing, cellSpacing);
+        glg.padding = new RectOffset(
             (int)gridPadding, (int)gridPadding,
             (int)gridPadding, (int)gridPadding);
-        glg.childAlignment  = TextAnchor.MiddleCenter;
+        glg.childAlignment = TextAnchor.MiddleCenter;
 
         // Instantiate cards
         for (int i = 0; i < totalCards; i++)
@@ -187,26 +199,37 @@ public class GameManager : MonoBehaviour
             a.SetMatched();
             b.SetMatched();
             matches++;
+            inGameMatches++;
+
+            //match cards
+            SoundManager.Instance.PlayMatch();
         }
         else
         {
             a.ResetCard();
             b.ResetCard();
+
+            //missmatch cards
+            SoundManager.Instance.PlayMismatch();
         }
 
         flippedCards.Clear();
         isChecking = false;
         UpdateUI();
 
+        FindObjectOfType<SaveSystem>().Save(matches, turns, selectedLayoutIndex);
+
         int totalPairs = allCards.Count / 2;
-        if (matches == totalPairs)
+        if (inGameMatches == totalPairs)
         {
             Debug.Log("Game Over");
             if (gameOverPanel != null)
             {
                 gameOverPanel.SetActive(true);
                 if (gameOverText != null)
-                    gameOverText.text = "You Win!\nMatches: " + matches + "\nTurns: " + turns;
+                    gameOverText.text = "You Win!\n\nMatches: " + matches + "\nTurns: " + turns;
+
+                SoundManager.Instance.PlayGameOver();
             }
         }
     }
@@ -218,6 +241,8 @@ public class GameManager : MonoBehaviour
 
         if (turnsText != null)
             turnsText.text = "Turns\n" + turns;
+
+        FindObjectOfType<ScoreSystem>().UpdateScore(matches, turns);
     }
 
     void Shuffle(List<int> list)
