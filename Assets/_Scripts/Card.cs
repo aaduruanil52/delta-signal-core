@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+
 public class Card : MonoBehaviour
 {
     public int id;
@@ -9,18 +10,24 @@ public class Card : MonoBehaviour
     public Sprite frontSprite;
     public Sprite backSprite;
 
+    [HideInInspector] public bool canClick = false;
+
     private bool isFlipped = false;
     private bool isMatched = false;
+    private Coroutine flipCoroutine;
 
     public void Setup(int newId, Sprite sprite)
     {
         id = newId;
         frontSprite = sprite;
-        iconImage.sprite = backSprite;
+
+        iconImage.sprite = frontSprite;
+        isFlipped = true;
     }
 
     public void OnClick()
     {
+        if (!canClick) return;
         if (isFlipped || isMatched) return;
 
         Flip(true);
@@ -29,34 +36,52 @@ public class Card : MonoBehaviour
 
     public void Flip(bool showFront)
     {
-        StartCoroutine(FlipAnimation(showFront));
+        if (flipCoroutine != null)
+            StopCoroutine(flipCoroutine);
+        flipCoroutine = StartCoroutine(FlipAnimation(showFront));
     }
 
     IEnumerator FlipAnimation(bool showFront)
     {
-        float duration = 0.2f;
-        float time = 0;
+        float duration = 0.15f;
+        float time = 0f;
 
-        float start = showFront ? 0 : 180;
-        float end = showFront ? 180 : 0;
+        // First half: fold to 90°
+        Quaternion startRot = transform.rotation;
+        Quaternion midRot = Quaternion.Euler(0, 90, 0);
 
         while (time < duration)
         {
-            float angle = Mathf.Lerp(start, end, time / duration);
-            transform.rotation = Quaternion.Euler(0, angle, 0);
+            transform.rotation = Quaternion.Lerp(startRot, midRot, time / duration);
             time += Time.deltaTime;
             yield return null;
         }
 
-        transform.rotation = Quaternion.Euler(0, end, 0);
-
+        // Swap sprite at the midpoint
+        transform.rotation = midRot;
         iconImage.sprite = showFront ? frontSprite : backSprite;
         isFlipped = showFront;
+
+        // Second half: unfold from 90°
+        time = 0f;
+        Quaternion endRot = Quaternion.Euler(0, 0, 0);
+
+        while (time < duration)
+        {
+            transform.rotation = Quaternion.Lerp(midRot, endRot, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = endRot;
+        flipCoroutine = null;
     }
 
     public void SetMatched()
     {
         isMatched = true;
+        // Optional: tint to show matched state
+        iconImage.color = new Color(0.7f, 1f, 0.7f);
     }
 
     public void ResetCard()
