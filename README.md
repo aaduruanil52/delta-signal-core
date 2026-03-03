@@ -15,13 +15,13 @@ The game supports multiple dynamic layouts and scales automatically to fit the d
 
 ## Features Implemented
 
-### ✅ Core Gameplay
+## Core Gameplay
 - Smooth card flip animations
 - Continuous card interaction (no hard locking of input)
 - Match and mismatch detection
 - Dynamic grid generation
 
-### ✅ Multiple Layout Support
+## Multiple Layout Support
 Supports various board sizes:
 - 2x2
 - 2x3
